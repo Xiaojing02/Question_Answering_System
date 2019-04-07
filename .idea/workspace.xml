@@ -3,96 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9f5c05c5-7dcc-42c5-b2b1-a430c923f5a7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/FeatureExtraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/FeatureExtraction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/Base.esapi.properties.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/Base.esapi.properties.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/CourseMenuDWRFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/CourseMenuDWRFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/ESAPI_Standard_en_US.properties.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/ESAPI_Standard_en_US.properties.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/MashupDWRFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/MashupDWRFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/ProfileProviderService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/ProfileProviderService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/ToolActivityService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/ToolActivityService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/UserDWRFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/UserDWRFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/UserDataDWRFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/UserDataDWRFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/UserPageInstructionsSettingDWRFacade.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/UserPageInstructionsSettingDWRFacade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/accessibleSelect.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/accessibleSelect.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/achievement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/achievement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/achievements.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/achievements.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/app_nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/app_nav.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/arrowDown-topnav.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/arrowDown-topnav.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/avatar_150.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/avatar_150.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/brand.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/brand.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/breadcrumbs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/breadcrumbs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/browserSpecificBehavior.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/browserSpecificBehavior.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/builder(1).js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/builder(1).js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/builder.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/builder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/cdn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/cdn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/client_cache.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/client_cache.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/cmlink_generic.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/cmlink_generic.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/controls(1).js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/controls(1).js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/controls.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/controls.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/cookie.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/cookie.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/cookieConsent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/cookieConsent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/coursemenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/coursemenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/document_on.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/document_on.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/downloadWrapper.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/downloadWrapper.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/dragdrop(1).js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/dragdrop(1).js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/dragdrop.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/dragdrop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/e99ceaa32b" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/e99ceaa32b" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/effects(1).js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/effects(1).js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/effects.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/effects.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/engine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/engine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/esapi-compressed.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/esapi-compressed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/fastinit.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/fastinit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/generic_dbl_arrow_right.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/generic_dbl_arrow_right.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/globalNavigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/globalNavigation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/global_nav_menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/global_nav_menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/i18n.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/i18n.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/jquery-noconflict.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/jquery-noconflict.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/jquery.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/jquery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/lightbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/lightbox.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/lz-string.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/lz-string.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/mybb.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/mybb.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/myblackboard_icon.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/myblackboard_icon.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/no-image.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/no-image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/nr-1118.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/nr-1118.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/numberLocalizer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/numberLocalizer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/opt_in_lightbox.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/opt_in_lightbox.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/popup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/print.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/print.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/profile_access.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/profile_access.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/prototype.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/prototype.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/quick_links.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/quick_links.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/shared.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/shared.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/slider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/slider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/small_new_window.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/small_new_window.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/small_refresh.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/small_refresh.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/social.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/social.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/spacer.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/spacer.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/titlebartagutils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/titlebartagutils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/tool_service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/tool_service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/tree.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/tree.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/util.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/validateForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/validateForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/version_pinned_scriptaculous.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/version_pinned_scriptaculous.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/video-integration.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/video-integration.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/video-integration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/video-integration.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/SampleQuestions/welcomeOverlay.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SampleQuestions/welcomeOverlay.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/AbrahamLincoln.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/AbrahamLincoln.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/AppleInc.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/AppleInc.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/CitiGroup.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/CitiGroup.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/Dallas.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/Dallas.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/ElonMusk.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/ElonMusk.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/Europe.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/Europe.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/GeorgeWashington.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/GeorgeWashington.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/IBM.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/IBM.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/JPMorganChase.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/JPMorganChase.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/MahatmaGandhi.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/MahatmaGandhi.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/NYC.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/NYC.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/SteveJobs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/SteveJobs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/TeslaInc.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/TeslaInc.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/Texas.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/Texas.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/WikipediaArticles/UnitedStates.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/WikipediaArticles/UnitedStates.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -189,11 +99,6 @@
               <item name="NLPProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="NLPProject" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="NLPProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NLPProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -202,6 +107,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -260,14 +166,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="80" width="1385" height="803" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24926686" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24926686" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32911393" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32911393" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3994374" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
