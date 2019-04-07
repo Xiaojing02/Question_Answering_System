@@ -1,0 +1,48 @@
+#cloud-tos-lightbox {
+  padding: 15px;
+  min-width: 800px;
+}
+
+#cloud-tos-lightbox h2 {
+  font-size: 2em;
+}
+
+#cloud-tos-lightbox .tos-contents {
+  margin: 10px 0;
+  border: 1px solid #CCC;
+  max-height: 150px;
+  overflow: auto;
+}
+
+#cloud-tos-lightbox div.tos-contents {
+  padding: 10px;
+}
+
+#cloud-tos-lightbox iframe.tos-contents {
+  width: 100%;
+  height: 150px;
+}
+
+#cloud-tos-lightbox p {
+  margin-bottom: 10px;
+}
+
+#cloud-tos-lightbox p.receipt {
+  margin: 10px 0;
+}
+
+#cloud-tos-lightbox .submit-help {
+  color: #666;
+  float: left;
+  line-height: 1.2em;
+}
+
+#cloud-tos-lightbox .submit-buttons {
+  text-align: right;
+}
+
+#cloud-tos-lightbox .insitution-tos-area {
+  margin-top: 10px;
+  padding: 20px 10px 0;
+  border-top: 1px solid #CCC;
+}
