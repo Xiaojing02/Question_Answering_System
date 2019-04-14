@@ -21,3 +21,5 @@
 # gensim.corpora.wikicorpus.WikiCorpus(fname, processes=None, lemmatize=True, dictionary=None, filter_namespaces=('0', ), tokenizer_func=<function tokenize>, article_min_tokens=50, token_min_len=2, token_max_len=15, lower=True, filter_articles=None)
 #
 # print(model.wv.most_similar("design"))
+
+
