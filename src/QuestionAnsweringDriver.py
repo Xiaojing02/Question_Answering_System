@@ -43,7 +43,10 @@ def get_document(question_keywords, doc_db):
         overlap = 0
         for keyword in question_keywords:
             # overlap = word_set.count(keyword)
-            overlap = cnt[keyword]
+            # overlap += cnt[keyword]
+            for item in cnt:
+                if item in keyword:
+                    overlap += cnt[item]
         if overlap > max_overlap:
             max_overlap = overlap
             candidate_doc[0] = doc.document_name
