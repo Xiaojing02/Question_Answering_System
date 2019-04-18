@@ -16,16 +16,15 @@ path = "./WikipediaArticles"
 # print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
 #                   token.shape_, token.is_alpha, token.is_stop)
 
+countMap = {}
 for fileName in os.listdir(path):
     if fileName.endswith(".txt"):
-        sentences = []
         f = open(path + "/" + fileName, "r", encoding="ISO-8859-1")
         read_data = f.read()
         f.seek(0)
         for line in f:
             if len(line) > 1:
                 sentencesSplit = line.split(". ")
-                sentences.extend(sentencesSplit)
 
         doc = nlp(read_data)
         # tokens = read_data.split()
@@ -36,15 +35,27 @@ for fileName in os.listdir(path):
                 tokens.append(token.lemma_)
         N = len(tokens)
         cnt = Counter(tokens)
-        for item in cnt:
-            cnt[item] /= N
+        # for item in cnt:
+        #     cnt[item] /= N
         # print(cnt)
+        #
+        # input_sentence = "When was UTD established?"
+        # doc2 = nlp(input_sentence)
+        # p = 1
+        # for token in doc2:
+        #     if token.lemma_ not in stopWords and not token.is_punct and token.lemma_ != "-PRON-":
+        #         if cnt[token.lemma_] != 0:
+        #             p = p * cnt[token.lemma_]
+        #         else:
+        #             p = p * (1 / N)
+        # print(fileName, p)
 
-        input_sentence = "When did Warren Buffett buy Berkshire Hathaway's shares?"
+        input_sentence = "Who founded Apple Inc.?"
         doc2 = nlp(input_sentence)
-        p = 1
+        sumOfAppearance = 0
         for token in doc2:
             if token.lemma_ not in stopWords and not token.is_punct and token.lemma_ != "-PRON-":
-                p = p * cnt[token.lemma_]
-        print(fileName, p)
-
+                for item in cnt:
+                    if item in token.lemma_:
+                        sumOfAppearance += cnt[item]
+        print(fileName, sumOfAppearance)
