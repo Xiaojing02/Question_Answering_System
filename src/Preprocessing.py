@@ -22,25 +22,13 @@ def preprocess(file, filename):
     document_db[doc] = word_set
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        num = len(sys.argv) - 1
-        print(sys.argv[0] + ": got " + str(num)
-              + "arguments. Expecting:[corpus_folder] and [pickle_folder]")
-        exit()
-
-    folder = sys.argv[1]
-    if folder[-1] != "/":
-        folder = folder + "/"
-    files = [join(folder, f) for f in listdir(folder) if isfile(join(folder, f))]
-    for file in files:
-        print(file)
-        if file.endswith(".txt"):
-            f = open(file, "r")
-            preprocess(f, file)
-    destination = sys.argv[2]
-    if destination[-1] != "/":
-        destination = destination + "/"
-    pu.storeData(database, destination + "database.pickle")
+def get_paragraphs(document):
+    paragraphs = document.split("\n\n")
+    return paragraphs
 
 
+def calc_ti_idf_vector(document):
+    paragraphs = get_paragraphs(document)
+    # print("Num of paragraph: " + str(len(paragraphs)))
+    tfidf, tfs = fe.get_tf_idf(paragraphs)
+    return paragraphs, tfidf, tfs

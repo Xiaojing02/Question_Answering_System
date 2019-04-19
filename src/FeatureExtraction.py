@@ -8,6 +8,8 @@ from nltk.parse.stanford import StanfordDependencyParser
 import string
 import spacy
 from nltk.corpus import stopwords
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 # def load_corpus(dir):
@@ -116,11 +118,25 @@ def get_holonyms(sense):
 
 
 def get_word_set_using_spacy(input):
+    input = re.sub('\n', '', input)
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(input)
     stop_words = set(stopwords.words('english'))
+    # stopwords.add('\n')
     tokens = []
     for token in doc:
         if token.lemma_ not in stop_words and not token.is_punct and token.lemma_ != "-PRON-":
             tokens.append(token.lemma_)
     return tokens
+
+
+def get_tf_idf(context):
+    tfidf = TfidfVectorizer()
+    tfs = tfidf.fit_transform(context)
+    return tfidf, tfs
+    # print(tfs)
+    # print(tfs.shape)
+    # feature_names = tfidf.get_feature_names()
+    # for col in tfs.nonzero()[1]:
+    #     print(feature_names[col], ' - ', tfs[0, col])
+
