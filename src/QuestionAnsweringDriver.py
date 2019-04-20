@@ -10,6 +10,8 @@ import QuestionProcessing as qp
 import numpy.matlib
 import numpy as np
 import scipy
+import string
+from collections import Counter
 
 
 # # a Python object (dict):
@@ -59,14 +61,22 @@ def get_document(question_keywords, doc_db):
         if len_of_intersection > max_len:
             max_len = len_of_intersection
             candidate_doc[1] = doc.document_name
-        # if doc.document_name == "LaurenePowellJobs.txt":
-            # print(cnt['die'])
-            # print(overlap)
-            # print(word_set)
-        # if doc.document_name == "SteveJobs.txt":
-        #     print(overlap)
-        #     print(cnt['die'])
-
+    if candidate_doc[0] == candidate_doc[1]:
+        candidate_doc.remove(candidate_doc[1])
+    # add one more condition: if document name is not in question, remove it
+    matched = False
+    tmp = []
+    for candidate in candidate_doc:
+        doc_name = candidate.split(".")[0]
+        doc_name = doc_name.translate(str.maketrans('', '', string.punctuation))
+        for keyword in question_keywords:
+            keyword = keyword.translate(str.maketrans('', '', string.punctuation))
+            if keyword in doc_name:
+                matched = True
+                tmp.append(candidate)
+                break
+    if matched:
+        candidate_doc = tmp
     return candidate_doc
 
 
@@ -78,16 +88,19 @@ def cosine_similarity(vector1, vector2):
 
 
 def get_passages(passages, doc_tf_idf, question_tf_idf):
-    similarity = -1
-    candidate_passage = None
+    candidate_passages = {}
     i = 0
     for vector in doc_tf_idf:
         sim_score = cosine_similarity(vector.todense(), question_tf_idf.todense())
-        if sim_score > similarity:
-            similarity = sim_score
-            candidate_passage = passages[i]
+        # print("The sim score is: " + str(sim_score))
+        if sim_score > 0.09:
+            candidate_passages[passages[i]] = sim_score
         i += 1
-    return candidate_passage
+    cnt = Counter(candidate_passages)
+    candidates = []
+    for candidate_passage in cnt.most_common(6):
+        candidates.append(candidate_passage[0])
+    return candidates
 
 
 if __name__ == "__main__":
@@ -115,23 +128,33 @@ if __name__ == "__main__":
                 "Where did AT&T spread to South America?", "When did Warren Buffett buy Berkshire Hathaway's shares?",
                 "When did Steve Jobs die?", "Where is the headquarters of Exxon Mobil?",
                 "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?"]
-    answers = ["AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt",
+    answer_documents = ["AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt",
                "AbrahamLincoln.txt", "AbrahamLincoln.txt", "AbrahamLincoln.txt", "UTD.txt", "UTD.txt",
                "MelindaGates.txt", "OprahWifrey.txt", "AT_T.txt", "AT_T.txt", "Berkshire_Hathaway.txt",
                "LaurenePowellJobs.txt", "ExxonMobil.txt", "ExxonMobil.txt", "Amazon_com.txt"]
+    answers = ["founded by Steve Jobs", "Motorola formed the AIM alliance with the goal of creating", "Apple was founded by Steve Jobs",
+               "went public in 1980", "Cupertino, California", "retail stores in Virginia and California",
+               "April 15", "leased farms in Kentucky", "November 19, 1863", "Eugene", "creating the University of Texas at Dallas",
+               "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
+               "October 5, 2011", "Irving", "formed in 1999", "Seattle"]
     for i, question in enumerate(questions):
         question_keywords = qp.get_keywords(question)
         doc_names = get_document(question_keywords, pp.document_db)
-        print(str(i + 1) + ": " + doc_names[0] + ", " + doc_names[1])
-        print(" Correct answer is: " + answers[i])
+        # print(str(i + 1) + ": " + doc_names[0] + ", " + doc_names[1])
+        print(str(i + 1) + ": " + ','.join([doc_name for doc_name in doc_names]))
+        print(" Correct answer is: " + answer_documents[i])
         for doc_name in doc_names:
             file = join(folder, doc_name)
             f = open(file, "r")
             paragraphs, tfidf, doc_tf_idf = pp.calc_ti_idf_vector(f.read())
             question_tf_idf = tfidf.transform([question])
             # print(question_tf_idf)
-            paragraph = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
-            print(paragraph)
+            paragraphs = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
+            print(paragraphs)
+            for paragraph in paragraphs:
+                if answers[i] in paragraph:
+                    print("True")
+
 
     # question = "When did Steve Jobs die?"
     # question_keywords = qp.get_keywords(question)

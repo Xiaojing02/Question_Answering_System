@@ -122,7 +122,6 @@ def get_word_set_using_spacy(input):
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(input)
     stop_words = set(stopwords.words('english'))
-    # stopwords.add('\n')
     tokens = []
     for token in doc:
         if token.lemma_ not in stop_words and not token.is_punct and token.lemma_ != "-PRON-":
@@ -130,8 +129,23 @@ def get_word_set_using_spacy(input):
     return tokens
 
 
+# get word and synonyms and noun and verb sets
+def get_all_word_set_using_spacy(input):
+    input = re.sub('\n', '', input)
+    nlp = spacy.load('en_core_web_sm')
+    doc = nlp(input)
+    stop_words = set(stopwords.words('english'))
+    tokens = []
+    for token in doc:
+        if token.lemma_ not in stop_words and not token.is_punct and token.lemma_ != "-PRON-":
+            tokens.append(token.lemma_)
+            for word in get_synonym(token.text):
+                tokens.append(word)
+    return tokens
+
+
 def get_tf_idf(context):
-    tfidf = TfidfVectorizer()
+    tfidf = TfidfVectorizer(tokenizer=get_all_word_set_using_spacy)
     tfs = tfidf.fit_transform(context)
     return tfidf, tfs
     # print(tfs)
