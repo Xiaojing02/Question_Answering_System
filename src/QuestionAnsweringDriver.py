@@ -13,7 +13,6 @@ import scipy
 import string
 from collections import Counter
 
-
 # # a Python object (dict):
 # x = {
 #     "name": "John",
@@ -110,15 +109,14 @@ if __name__ == "__main__":
               + "arguments. Expecting:[corpus_folder]")
         exit()
 
-    folder = sys.argv[1]
-    if folder[-1] != "/":
-        folder = folder + "/"
-    files = [join(folder, f) for f in listdir(folder) if isfile(join(folder, f))]
-    for file in files:
-        print(file)
-        if file.endswith(".txt"):
-            f = open(file, "r")
-            pp.preprocess(f.read(), file)
+    path = sys.argv[1]
+    if path[-1] != "/":
+        path = path + "/"
+
+    # Update_or_not need to be set to True after modifying get_word_set_using_spacy()
+    # to re-preprocess the whole database
+    document_db = pp.preprocess(path, update_or_not=False)
+
     questions = ["Who founded Apple Inc.?", "Who supported Apple in creating a new computing platform?",
                 "When was Apple Inc. founded?", "When did Apple go public?", "Where is Apple’s headquarters?",
                 "Where did Apple open its first retail store?", "When did Abraham Lincoln die?",
@@ -137,16 +135,28 @@ if __name__ == "__main__":
                "April 15", "leased farms in Kentucky", "November 19, 1863", "Eugene", "creating the University of Texas at Dallas",
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
                "October 5, 2011", "Irving", "formed in 1999", "Seattle"]
+
+    # Preprocess all the docs in advance(might take a lot of time)
+    # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
+    # to re-preprocess the document
+    # p_t_t_dict = pp.preprocess_ti_idf_vector_for_all_files(path, update_or_not=False)
+
     for i, question in enumerate(questions):
         question_keywords = qp.get_keywords(question)
-        doc_names = get_document(question_keywords, pp.document_db)
+        doc_names = get_document(question_keywords, document_db)
         # print(str(i + 1) + ": " + doc_names[0] + ", " + doc_names[1])
         print(str(i + 1) + ": " + ','.join([doc_name for doc_name in doc_names]))
         print(" Correct answer is: " + answer_documents[i])
         for doc_name in doc_names:
-            file = join(folder, doc_name)
-            f = open(file, "r")
-            paragraphs, tfidf, doc_tf_idf = pp.calc_ti_idf_vector(f.read())
+
+            # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
+            # to re-preprocess the document
+            paragraphs, tfidf, doc_tf_idf = pp.process_ti_idf_vector_for_single_file(path, doc_name, update_or_not=False)
+
+            # If already preprocess all the docs in advance, can just read the tuple from the p_t_t_dict
+            # p_t_t_tuple = p_t_t_dict[doc_name]
+            # paragraphs, tfidf, doc_tf_idf = p_t_t_tuple[0], p_t_t_tuple[1], p_t_t_tuple[2]
+
             question_tf_idf = tfidf.transform([question])
             # print(question_tf_idf)
             paragraphs = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
