@@ -91,9 +91,6 @@ def calc_ti_idf_vector(document):
     paragraphs = get_paragraphs(document)
     # print("Num of paragraph: " + str(len(paragraphs)))
     tfidf, tfs = fe.get_tf_idf(paragraphs)
-<<<<<<< HEAD
-    return paragraphs, tfidf, tfs
-=======
     return paragraphs, tfidf, tfs
 
 
@@ -102,4 +99,3 @@ def calc_svd_vector(document):
     # print("Num of paragraph: " + str(len(paragraphs)))
     svd_transformer, svd_matrix = fe.get_lsi(paragraphs)
     return paragraphs, svd_transformer, svd_matrix
->>>>>>> added noun and verb format of word

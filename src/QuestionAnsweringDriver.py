@@ -153,17 +153,13 @@ if __name__ == "__main__":
                "went public in 1980", "Cupertino, California", "retail stores in Virginia and California",
                "April 15", "leased farms in Kentucky", "November 19, 1863", "Eugene", "creating the University of Texas at Dallas",
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
-<<<<<<< HEAD
-               "October 5, 2011", "Irving", "formed in 1999", "Seattle"]
+               "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
     # Preprocess all the docs in advance(might take a lot of time)
     # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
     # to re-preprocess the document
     # p_t_t_dict = pp.preprocess_ti_idf_vector_for_all_files(path, update_or_not=False)
 
-=======
-               "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
->>>>>>> added noun and verb format of word
     for i, question in enumerate(questions):
         question_keywords = qp.get_keywords(question)
         doc_names = get_document(question_keywords, document_db)
@@ -187,7 +183,6 @@ if __name__ == "__main__":
             for paragraph in paragraphs:
                 if answers[i] in paragraph:
                     print("True")
-
 
     # for i, question in enumerate(questions):
     #     question_keywords = qp.get_keywords(question)
