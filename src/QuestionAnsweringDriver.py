@@ -12,6 +12,7 @@ import numpy as np
 import scipy
 import string
 from collections import Counter
+from sklearn.metrics import pairwise_distances
 
 # # a Python object (dict):
 # x = {
@@ -92,14 +93,30 @@ def get_passages(passages, doc_tf_idf, question_tf_idf):
     for vector in doc_tf_idf:
         sim_score = cosine_similarity(vector.todense(), question_tf_idf.todense())
         # print("The sim score is: " + str(sim_score))
-        if sim_score > 0.09:
-            candidate_passages[passages[i]] = sim_score
+        candidate_passages[passages[i]] = sim_score
+        # if sim_score > 0.08:
+        #     candidate_passages[passages[i]] = sim_score
         i += 1
     cnt = Counter(candidate_passages)
     candidates = []
     for candidate_passage in cnt.most_common(6):
         candidates.append(candidate_passage[0])
     return candidates
+
+
+# def get_passages2(passages, svd_matrix, query_vector):
+#     distance_matrix = pairwise_distances(query_vector,
+#                                          svd_matrix,
+#                                          metric='cosine',
+#                                          n_jobs=-1)
+#     candidate_passages = {}
+#     for i, distance in enumerate(distance_matrix):
+#         candidate_passages[passages[i]] = distance
+#     cnt = Counter(candidate_passages)
+#     candidates = []
+#     for candidate_passage in cnt.most_common(6):
+#         candidates.append(candidate_passage[0])
+#     return candidates
 
 
 if __name__ == "__main__":
@@ -125,15 +142,18 @@ if __name__ == "__main__":
                 "Where is the birth place of Oprah Winfrey?", "Where is the headquarters of AT&T?",
                 "Where did AT&T spread to South America?", "When did Warren Buffett buy Berkshire Hathaway's shares?",
                 "When did Steve Jobs die?", "Where is the headquarters of Exxon Mobil?",
-                "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?"]
+                "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?",
+                 "Who shot Abraham Lincoln?", "Where is UTD located?"]
     answer_documents = ["AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt",
                "AbrahamLincoln.txt", "AbrahamLincoln.txt", "AbrahamLincoln.txt", "UTD.txt", "UTD.txt",
                "MelindaGates.txt", "OprahWifrey.txt", "AT_T.txt", "AT_T.txt", "Berkshire_Hathaway.txt",
-               "LaurenePowellJobs.txt", "ExxonMobil.txt", "ExxonMobil.txt", "Amazon_com.txt"]
+               "LaurenePowellJobs.txt", "ExxonMobil.txt", "ExxonMobil.txt", "Amazon_com.txt",
+                        "AbrahamLincoln.txt", "UTD.txt"]
     answers = ["founded by Steve Jobs", "Motorola formed the AIM alliance with the goal of creating", "Apple was founded by Steve Jobs",
                "went public in 1980", "Cupertino, California", "retail stores in Virginia and California",
                "April 15", "leased farms in Kentucky", "November 19, 1863", "Eugene", "creating the University of Texas at Dallas",
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
+<<<<<<< HEAD
                "October 5, 2011", "Irving", "formed in 1999", "Seattle"]
 
     # Preprocess all the docs in advance(might take a lot of time)
@@ -141,6 +161,9 @@ if __name__ == "__main__":
     # to re-preprocess the document
     # p_t_t_dict = pp.preprocess_ti_idf_vector_for_all_files(path, update_or_not=False)
 
+=======
+               "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
+>>>>>>> added noun and verb format of word
     for i, question in enumerate(questions):
         question_keywords = qp.get_keywords(question)
         doc_names = get_document(question_keywords, document_db)
@@ -165,6 +188,24 @@ if __name__ == "__main__":
                 if answers[i] in paragraph:
                     print("True")
 
+
+    # for i, question in enumerate(questions):
+    #     question_keywords = qp.get_keywords(question)
+    #     doc_names = get_document(question_keywords, pp.document_db)
+    #     # print(str(i + 1) + ": " + doc_names[0] + ", " + doc_names[1])
+    #     print(str(i + 1) + ": " + ','.join([doc_name for doc_name in doc_names]))
+    #     print(" Correct answer is: " + answer_documents[i])
+    #     for doc_name in doc_names:
+    #         file = join(folder, doc_name)
+    #         f = open(file, "r")
+    #         paragraphs, svd_transformer, svd_matrix = pp.calc_svd_vector(f.read())
+    #         query_vector = svd_transformer.transform([question])
+    #         # print(question_tf_idf)
+    #         paragraphs = get_passages2(paragraphs, svd_matrix, query_vector)
+    #         print(paragraphs)
+    #         for paragraph in paragraphs:
+    #             if answers[i] in paragraph:
+    #                 print("True")
 
     # question = "When did Steve Jobs die?"
     # question_keywords = qp.get_keywords(question)

@@ -10,6 +10,8 @@ import spacy
 from nltk.corpus import stopwords
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import TruncatedSVD
+from sklearn.pipeline import Pipeline
 
 
 # def load_corpus(dir):
@@ -129,6 +131,28 @@ def get_word_set_using_spacy(input):
     return tokens
 
 
+def convert(word):
+    """ Transform words given from/to POS tags """
+    synsets = wn.synsets(word)
+
+    # Word not found
+    if not synsets:
+        return []
+
+    # Get all lemmas of the word (consider 'a'and 's' equivalent)
+    lemmas = [l for s in synsets
+              for l in s.lemmas()]
+
+    # Get related forms
+    derivationally_related_forms = [(l, l.derivationally_related_forms()) for l in lemmas]
+    related_noun_lemmas = [l for drf in derivationally_related_forms
+                           for l in drf[1]]
+
+    # Extract the words from the lemmas
+    words = [l.name() for l in related_noun_lemmas]
+    return words
+
+
 # get word and synonyms and noun and verb sets
 def get_all_word_set_using_spacy(input):
     input = re.sub('\n', '', input)
@@ -141,6 +165,8 @@ def get_all_word_set_using_spacy(input):
             tokens.append(token.lemma_)
             for word in get_synonym(token.text):
                 tokens.append(word)
+                # for w in convert(word):
+                #     tokens.append(w)
     return tokens
 
 
@@ -153,4 +179,12 @@ def get_tf_idf(context):
     # feature_names = tfidf.get_feature_names()
     # for col in tfs.nonzero()[1]:
     #     print(feature_names[col], ' - ', tfs[0, col])
+
+
+def get_lsi(context):
+    tfidf = TfidfVectorizer(tokenizer=get_all_word_set_using_spacy)
+    svd_model = TruncatedSVD(n_components=500, n_iter=7, random_state=42)
+    svd_transformer = Pipeline([('tfidf', tfidf), ('svd', svd_model)])
+    svd_matrix = svd_transformer.fit_transform(context)
+    return svd_transformer, svd_matrix
 
