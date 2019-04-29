@@ -12,7 +12,10 @@ import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 from sklearn.pipeline import Pipeline
-
+from os.path import join
+from spacy import displacy
+import webbrowser
+from nltk.corpus import wordnet as wn
 
 # def load_corpus(dir):
 #     wordlists = PlaintextCorpusReader(dir, '.*')
@@ -20,9 +23,12 @@ from sklearn.pipeline import Pipeline
 #     return wordlists
 
 
-def get_sentences(context):
-    sentences = sent_tokenize(context)
-    return sentences
+# def get_sentences(context):
+#     sentences = sent_tokenize(context)
+#     return sentences
+
+def get_sentences(doc):
+    return doc.sents
 
 
 def remove_stopwords(wordsList):
@@ -31,15 +37,19 @@ def remove_stopwords(wordsList):
     return wordsList
 
 
-def get_words(sentence):
-    lowers = sentence.lower()
-    # no_punctuation = lowers.translate(str.maketrans(string.punctuation, ' '*len(string.punctuation)))
-    no_punctuation = lowers.translate(str.maketrans('', '', string.punctuation))
-    tokens = word_tokenize(no_punctuation)
-    # print(tokens)
-    # tokens = word_tokenize(sentence.lower())
-    tokens = remove_stopwords(tokens)
-    return tokens
+# def get_words(sentence):
+#     lowers = sentence.lower()
+#     # no_punctuation = lowers.translate(str.maketrans(string.punctuation, ' '*len(string.punctuation)))
+#     no_punctuation = lowers.translate(str.maketrans('', '', string.punctuation))
+#     tokens = word_tokenize(no_punctuation)
+#     # print(tokens)
+#     # tokens = word_tokenize(sentence.lower())
+#     tokens = remove_stopwords(tokens)
+#     return tokens
+
+def get_words(doc):
+    token_text_list = [token.text for token in doc]
+    return token_text_list
 
 
 def get_words_and_synonyms(sentence):
@@ -53,30 +63,47 @@ def get_words_and_synonyms(sentence):
     return word_set
 
 
-def get_lemmars(word):
-    lemmatizer = WordNetLemmatizer()
-    lemmatized_words = lemmatizer.lemmatize(word)
-    return lemmatized_words
+# def get_lemmars(word):
+#     lemmatizer = WordNetLemmatizer()
+#     lemmatized_words = lemmatizer.lemmatize(word)
+#     return lemmatized_words
+
+def get_lemmars(doc):
+    lemmatized_tokens_list = [token.lemma_ for token in doc]
+    return lemmatized_tokens_list
 
 
-def get_pos(tokens):
-    tagged = nltk.pos_tag(tokens)
-    # print(tagged[0:6])
-    return tagged
+# def get_pos(tokens):
+#     tagged = nltk.pos_tag(tokens)
+#     # print(tagged[0:6])
+#     return tagged
+
+def get_pos(doc):
+    POS_list = [(token.text, token.tag_) for token in doc]
+    return POS_list
 
 
 # check how to do this????
 # https://stackoverflow.com/questions/7443330/how-do-i-do-dependency-parsing-in-nltk
-def get_parse_tree():
-    path_to_jar = 'path_to/stanford-parser-full-2014-08-27/stanford-parser.jar'
-    path_to_models_jar = 'path_to/stanford-parser-full-2014-08-27/stanford-parser-3.4.1-models.jar'
+# def get_parse_tree():
+#     path_to_jar = 'path_to/stanford-parser-full-2014-08-27/stanford-parser.jar'
+#     path_to_models_jar = 'path_to/stanford-parser-full-2014-08-27/stanford-parser-3.4.1-models.jar'
+#
+#     dependency_parser = StanfordDependencyParser(path_to_jar=path_to_jar, path_to_models_jar=path_to_models_jar)
+#
+#     result = dependency_parser.raw_parse('I shot an elephant in my sleep')
+#     dep = result.next()
+#
+#     list(dep.triples())
 
-    dependency_parser = StanfordDependencyParser(path_to_jar=path_to_jar, path_to_models_jar=path_to_models_jar)
 
-    result = dependency_parser.raw_parse('I shot an elephant in my sleep')
-    dep = result.next()
-
-    list(dep.triples())
+def get_parse_tree(sentences, nlp, nth):
+    counter = 0
+    for sentence in sentences:
+        s = nlp(str(sentence))
+        if counter == nth:
+            displacy.serve(s, style='dep',page=True)
+        counter = counter + 1
 
 
 def get_entities(tagged):
@@ -188,3 +215,29 @@ def get_lsi(context):
     svd_matrix = svd_transformer.fit_transform(context)
     return svd_transformer, svd_matrix
 
+
+if __name__ == "__main__":
+    path = "WikipediaArticles_All/"
+    document_name = "AppleInc.txt"
+    f = open(join(path, document_name), "r")
+    data = f.read()
+    nlp = spacy.load('en_core_web_sm')
+    doc = nlp(data)
+    sentences = get_sentences(doc)
+    for sentence in sentences:
+        print(sentence)
+    tokens = get_words(doc)
+    for token in tokens:
+        print(token)
+    lemmatized_tokens = get_lemmars(doc)
+    for lemmatized_token in lemmatized_tokens:
+        print(lemmatized_token)
+    POS_list = get_pos(doc)
+    for POS in POS_list:
+        print(POS)
+    get_parse_tree(sentences, nlp, 5)
+    word = wn.synset('dog.n.01')
+    print(get_hypernyms(word))
+    print(get_hyponyms(word))
+    print(get_meronyms(word))
+    print(get_holonyms(word))
