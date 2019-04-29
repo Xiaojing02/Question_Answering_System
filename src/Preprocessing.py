@@ -13,6 +13,7 @@ import pickle
 
 saved_db_path = 'Pickle/db.obj'
 saved_ti_idf_path = 'Pickle/ti_idf.obj'
+nlp = spacy.load('en')
 
 # use spaCy processing pipeline to process original documents
 def preprocess(path, update_or_not):
@@ -52,7 +53,7 @@ def preprocess_ti_idf_vector_for_all_files(path, update_or_not):
                 data = f.read()
                 doc_name = file.split("/")[1]
                 print("Calculating ti idf for " + doc_name)
-                paragraphs, tfidf, tfs = calc_ti_idf_vector(data)
+                paragraphs, tfidf, tfs = calc_ti_idf_vector_for_paragraphs(data)
                 p_t_t_dict[doc_name] = (paragraphs, tfidf, tfs)
         file_handler = open(saved_ti_idf_path, 'wb')
         pickle.dump(p_t_t_dict, file_handler)
@@ -72,7 +73,7 @@ def process_ti_idf_vector_for_single_file(path, doc_name, update_or_not):
         data = f.read()
         print("Calculating ti idf for " + doc_name)
         doc = Document(doc_name)
-        paragraphs, tfidf, tfs = calc_ti_idf_vector(data)
+        paragraphs, tfidf, tfs = calc_ti_idf_vector_for_paragraphs(data)
         p_t_t_tuple = (paragraphs, tfidf, tfs)
         file_handler = open(saved_single_doct_ti_idf_path, 'wb')
         pickle.dump(p_t_t_tuple, file_handler)
@@ -82,16 +83,39 @@ def process_ti_idf_vector_for_single_file(path, doc_name, update_or_not):
     return p_t_t_tuple[0], p_t_t_tuple[1], p_t_t_tuple[2] # paragraphs, tfidf, tfs
 
 
+def process_ti_idf_vector_for_sentences(paragraphs):
+    sentences = get_sentences(paragraphs)
+    print("Calculating ti idf for sentences")
+    tfidf, tfs = calc_ti_idf_vector_for_sentences(sentences)
+    return sentences, tfidf, tfs
+
+
+def get_sentences(paragraphs):
+    text = ""
+    for paragraph in paragraphs:
+        text = text + paragraph
+    tokens = nlp(text)
+    sentences = []
+    for sent in tokens.sents:
+        sentences.append(sent.string.strip())
+    return sentences
+
+
 def get_paragraphs(document):
     paragraphs = document.split("\n\n")
     return paragraphs
 
 
-def calc_ti_idf_vector(document):
+def calc_ti_idf_vector_for_paragraphs(document):
     paragraphs = get_paragraphs(document)
     # print("Num of paragraph: " + str(len(paragraphs)))
     tfidf, tfs = fe.get_tf_idf(paragraphs)
     return paragraphs, tfidf, tfs
+
+
+def calc_ti_idf_vector_for_sentences(sentences):
+    tfidf, tfs = fe.get_tf_idf(sentences)
+    return tfidf, tfs
 
 
 def calc_svd_vector(document):

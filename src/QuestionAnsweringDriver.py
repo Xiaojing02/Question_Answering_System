@@ -142,18 +142,16 @@ if __name__ == "__main__":
                 "Where is the birth place of Oprah Winfrey?", "Where is the headquarters of AT&T?",
                 "Where did AT&T spread to South America?", "When did Warren Buffett buy Berkshire Hathaway's shares?",
                 "When did Steve Jobs die?", "Where is the headquarters of Exxon Mobil?",
-                "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?",
-                 "Who shot Abraham Lincoln?", "Where is UTD located?"]
+                "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?"]
     answer_documents = ["AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt",
                "AbrahamLincoln.txt", "AbrahamLincoln.txt", "AbrahamLincoln.txt", "UTD.txt", "UTD.txt",
                "MelindaGates.txt", "OprahWifrey.txt", "AT_T.txt", "AT_T.txt", "Berkshire_Hathaway.txt",
-               "LaurenePowellJobs.txt", "ExxonMobil.txt", "ExxonMobil.txt", "Amazon_com.txt",
-                        "AbrahamLincoln.txt", "UTD.txt"]
+               "LaurenePowellJobs.txt", "ExxonMobil.txt", "ExxonMobil.txt", "Amazon_com.txt"]
     answers = ["founded by Steve Jobs", "Motorola formed the AIM alliance with the goal of creating", "Apple was founded by Steve Jobs",
                "went public in 1980", "Cupertino, California", "retail stores in Virginia and California",
                "April 15", "leased farms in Kentucky", "November 19, 1863", "Eugene", "creating the University of Texas at Dallas",
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
-               "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
+               "October 5, 2011", "Irving", "formed in 1999", "Seattle"]
 
     # Preprocess all the docs in advance(might take a lot of time)
     # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
@@ -183,6 +181,13 @@ if __name__ == "__main__":
             for paragraph in paragraphs:
                 if answers[i] in paragraph:
                     print("True")
+            sentences, tfidf, doc_tf_idf = pp.process_ti_idf_vector_for_sentences(paragraphs)
+            question_tf_idf = tfidf.transform([question])
+            sentences_candidates = get_passages(sentences, doc_tf_idf, question_tf_idf)
+            print(sentences_candidates)
+            for sentences_candidate in sentences_candidates:
+                if answers[i] in sentences_candidate:
+                    print("对对对对啦")
 
     # for i, question in enumerate(questions):
     #     question_keywords = qp.get_keywords(question)
@@ -209,7 +214,7 @@ if __name__ == "__main__":
     # for doc_name in doc_names:
     #     file = join(folder, doc_name)
     #     f = open(file, "r")
-    #     paragraphs, tfidf, doc_tf_idf = pp.calc_ti_idf_vector(f.read())
+    #     paragraphs, tfidf, doc_tf_idf = pp.calc_ti_idf_vector_for_paragraphs(f.read())
     #     question_tf_idf = tfidf.transform([question])
     #     print(question_tf_idf)
     #     paragraph = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
