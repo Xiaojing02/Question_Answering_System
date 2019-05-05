@@ -12,6 +12,7 @@ import numpy as np
 import scipy
 import string
 from collections import Counter
+import FeatureExtraction as fe
 from sklearn.metrics import pairwise_distances
 from nltk.tag import StanfordNERTagger
 
@@ -157,9 +158,6 @@ if __name__ == "__main__":
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
                "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
-    # jar = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/stanford-ner.jar'
-    # model = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
-    # st = StanfordNERTagger(model, jar)
     # for question in questions:
     #     tokens = question.split()
     #     print(st.tag(tokens))
@@ -169,6 +167,10 @@ if __name__ == "__main__":
     # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
     # to re-preprocess the document
     # p_t_t_dict = pp.preprocess_ti_idf_vector_for_all_files(path, update_or_not=False)
+
+    jar = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/stanford-ner.jar'
+    model = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+    st = StanfordNERTagger(model, jar)
 
     for i, question in enumerate(questions):
         question_keywords = qp.get_keywords(question)
@@ -197,7 +199,15 @@ if __name__ == "__main__":
 
             tokens = question.split()
             ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)
-
+            tuple_candidate_pool = []
+            for paragraph in paragraphs:
+                sentences = fe.get_sentences(paragraph)
+                for sentence in sentences:
+                    ner_tuple_list = st.tag(sentence.split())
+                    for ner_tuple in ner_tuple_list:
+                        if ner_tuple[1] in ner_list:
+                            tuple_candidate_pool.append(ner_tuple)
+            print(tuple_candidate_pool)
 
     # for i, question in enumerate(questions):
     #     question_keywords = qp.get_keywords(question)

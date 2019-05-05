@@ -23,11 +23,12 @@ from nltk.corpus import wordnet as wn
 #     return wordlists
 
 
-# def get_sentences(context):
-#     sentences = sent_tokenize(context)
-#     return sentences
+def get_sentences(context):
+    sentences = sent_tokenize(context)
+    return sentences
 
-def get_sentences(doc):
+
+def get_sentences_using_spacy(doc):
     return doc.sents
 
 
@@ -223,7 +224,7 @@ if __name__ == "__main__":
     data = f.read()
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(data)
-    sentences = get_sentences(doc)
+    sentences = get_sentences_using_spacy(doc)
     for sentence in sentences:
         print(sentence)
     tokens = get_words(doc)
