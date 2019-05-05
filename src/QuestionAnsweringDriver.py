@@ -13,6 +13,8 @@ import scipy
 import string
 from collections import Counter
 from sklearn.metrics import pairwise_distances
+from nltk.tag import StanfordNERTagger
+
 
 # # a Python object (dict):
 # x = {
@@ -155,6 +157,14 @@ if __name__ == "__main__":
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
                "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
+    # jar = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/stanford-ner.jar'
+    # model = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+    # st = StanfordNERTagger(model, jar)
+    # for question in questions:
+    #     tokens = question.split()
+    #     print(st.tag(tokens))
+    #     print(qp.identify_question_type(qp.extract_wh_word(tokens), tokens))
+
     # Preprocess all the docs in advance(might take a lot of time)
     # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
     # to re-preprocess the document
@@ -181,8 +191,13 @@ if __name__ == "__main__":
             paragraphs = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
             print(paragraphs)
             for paragraph in paragraphs:
+                # print(paragraph)
                 if answers[i] in paragraph:
                     print("True")
+
+            tokens = question.split()
+            ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)
+
 
     # for i, question in enumerate(questions):
     #     question_keywords = qp.get_keywords(question)

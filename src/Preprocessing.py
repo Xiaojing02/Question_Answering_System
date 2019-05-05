@@ -99,3 +99,7 @@ def calc_svd_vector(document):
     # print("Num of paragraph: " + str(len(paragraphs)))
     svd_transformer, svd_matrix = fe.get_lsi(paragraphs)
     return paragraphs, svd_transformer, svd_matrix
+
+
+def lower_tokens(words):
+    return [word.lower() for word in words]
