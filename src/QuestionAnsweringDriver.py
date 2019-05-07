@@ -15,7 +15,7 @@ from collections import Counter
 import FeatureExtraction as fe
 from sklearn.metrics import pairwise_distances
 from nltk.tag import StanfordNERTagger
-# import graphlab as gl
+from BM25 import BM25Okapi
 
 
 # # a Python object (dict):
@@ -71,11 +71,11 @@ def get_passages(answer_types, passages, doc_ner):
     candidate_passages = []
     i = 0
     for passage in passages:
-        doc_nes = set(doc_ner[i])
+        doc_nes = set([ne[1] for ne in doc_ner[i]])
         overlap = answer_types.intersection(doc_nes)
         if overlap:
             candidate_passages.append(passage)
-    i += 1
+        i += 1
     return candidate_passages
 
 
@@ -113,9 +113,19 @@ if __name__ == "__main__":
                "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
     jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
-    model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+    # model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+    model = 'stanford-ner-2018-10-16/classifiers/english.muc.7class.distsim.crf.ser.gz'
     st = StanfordNERTagger(model, jar)
 
+    # questions = ["When did Apple go public?"]
+    # test = "Apple Computer Company was founded on April 1, 1976, by Steve Jobs, Steve Wozniak, and Ronald Wayne. The " \
+    #        "company's first product is the Apple I, a computer designed and hand-built entirely by Wozniak, and " \
+    #        "first shown to the public at the Homebrew Computer Club. Apple I was sold as a motherboard " \
+    #        "(with CPU, RAM, and basic textual-video chips)—a base kit concept which would now not be marketed " \
+    #        "as a complete personal computer. The Apple I went on sale in July 1976 and was market-priced at " \
+    #        "$666.66 ($2,935 in 2018 dollars, adjusted for inflation)."
+    # print(pp.get_named_entities(test))
+    # questions = []
     for i, question in enumerate(questions):
         # use tf-idf to get candidate documents and the results are ordered by their rankings
         doc_names, documents, tfidf, doc_tf_idf = pp.get_ti_idf_vector(files)
@@ -135,9 +145,27 @@ if __name__ == "__main__":
         # Passage Retrieval
         # First use Answer types filter out passages without relevant entities
         # Then use features to rank passages
+        candidate_sentences = []
+        sentences = []
         for doc_name in candidate_documents:
             paragraphs, doc_ner = pp.process_ner_for_single_file(path, doc_name, update_or_not=False)
             candidate_passages = get_passages(answer_types, paragraphs, doc_ner)
+            for passage in candidate_passages:
+                sen = passage.split('. ')
+                for s in sen:
+                    sentences.append(s)
+        corpus = []
+        for sentence in sentences:
+                word_set = fe.get_word_set_using_spacy(sentence)
+                corpus.append(word_set)
+        if len(corpus) != 0:
+            bm25 = BM25Okapi(corpus)
+            question_word_set = fe.get_word_set_using_spacy(question)
+            doc_scores = bm25.get_scores(question_word_set)
+            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=5)
+            print(candidate_sentences)
+        else:
+            print("Answer is not found.")
 
         # tokens = question.split()
         # ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)

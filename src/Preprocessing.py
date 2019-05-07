@@ -132,17 +132,6 @@ def get_named_entities(passage):
     return fe.get_nes(passage)
 
 
-def get_number_of_right_nes():
-    return 0
+def get_named_entities_with_spacy(passage):
+    fe.get_nes_with_spacy(passage)
 
-
-def get_number_of_question_keywords():
-    return 0
-
-
-def get_longest_exact_sequence():
-    return 0
-
-
-def get_passage_feature_vectors():
-    return 0

@@ -186,6 +186,14 @@ def get_nes(context):
     return ne_list
 
 
+def get_nes_with_spacy(context):
+    nlp = spacy.load('en_core_web_sm')
+    doc = nlp(context)
+    for ent in doc.ents:
+        print(ent.text, ent.start_char, ent.end_char, ent.label_)
+    return doc.ents
+
+
 if __name__ == "__main__":
     path = "WikipediaArticles_All/"
     document_name = "AppleInc.txt"

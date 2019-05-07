@@ -8,9 +8,6 @@ from nltk.tag import StanfordNERTagger
 
 
 WH_words = ['how', 'what', 'where', 'when', 'who', 'which']
-jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
-model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
-st = StanfordNERTagger(model, jar)
 
 
 def extract_wh_word(words):
