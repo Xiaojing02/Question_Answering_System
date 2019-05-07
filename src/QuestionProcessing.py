@@ -4,9 +4,14 @@ import FeatureExtraction as fe
 import Preprocessing as pp
 import sys
 from collections import Counter
+from nltk.tag import StanfordNERTagger
 
 
 WH_words = ['how', 'what', 'where', 'when', 'who', 'which']
+jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
+model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+st = StanfordNERTagger(model, jar)
+
 
 def extract_wh_word(words):
     for word in words:
@@ -121,3 +126,11 @@ def identify_question_type(wh, q_words):
 
 def get_keywords(sentence):
     return fe.get_word_set_using_spacy(sentence)
+
+
+def get_named_entities(sentence):
+    return fe.get_nes(sentence)
+
+
+def get_head(sentence):
+    return ""

@@ -16,11 +16,12 @@ from os.path import join
 from spacy import displacy
 import webbrowser
 from nltk.corpus import wordnet as wn
+from nltk.tag import StanfordNERTagger
 
-# def load_corpus(dir):
-#     wordlists = PlaintextCorpusReader(dir, '.*')
-#     # wordlists.fileids()
-#     return wordlists
+
+jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
+model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+st = StanfordNERTagger(model, jar)
 
 
 def get_sentences(context):
@@ -64,38 +65,14 @@ def get_words_and_synonyms(sentence):
     return word_set
 
 
-# def get_lemmars(word):
-#     lemmatizer = WordNetLemmatizer()
-#     lemmatized_words = lemmatizer.lemmatize(word)
-#     return lemmatized_words
-
 def get_lemmars(doc):
     lemmatized_tokens_list = [token.lemma_ for token in doc]
     return lemmatized_tokens_list
 
 
-# def get_pos(tokens):
-#     tagged = nltk.pos_tag(tokens)
-#     # print(tagged[0:6])
-#     return tagged
-
 def get_pos(doc):
     POS_list = [(token.text, token.tag_) for token in doc]
     return POS_list
-
-
-# check how to do this????
-# https://stackoverflow.com/questions/7443330/how-do-i-do-dependency-parsing-in-nltk
-# def get_parse_tree():
-#     path_to_jar = 'path_to/stanford-parser-full-2014-08-27/stanford-parser.jar'
-#     path_to_models_jar = 'path_to/stanford-parser-full-2014-08-27/stanford-parser-3.4.1-models.jar'
-#
-#     dependency_parser = StanfordDependencyParser(path_to_jar=path_to_jar, path_to_models_jar=path_to_models_jar)
-#
-#     result = dependency_parser.raw_parse('I shot an elephant in my sleep')
-#     dep = result.next()
-#
-#     list(dep.triples())
 
 
 def get_parse_tree(sentences, nlp, nth):
@@ -103,7 +80,7 @@ def get_parse_tree(sentences, nlp, nth):
     for sentence in sentences:
         s = nlp(str(sentence))
         if counter == nth:
-            displacy.serve(s, style='dep',page=True)
+            displacy.serve(s, style='dep', page=True)
         counter = counter + 1
 
 
@@ -202,19 +179,11 @@ def get_tf_idf(context):
     tfidf = TfidfVectorizer(tokenizer=get_all_word_set_using_spacy)
     tfs = tfidf.fit_transform(context)
     return tfidf, tfs
-    # print(tfs)
-    # print(tfs.shape)
-    # feature_names = tfidf.get_feature_names()
-    # for col in tfs.nonzero()[1]:
-    #     print(feature_names[col], ' - ', tfs[0, col])
 
 
-def get_lsi(context):
-    tfidf = TfidfVectorizer(tokenizer=get_all_word_set_using_spacy)
-    svd_model = TruncatedSVD(n_components=500, n_iter=7, random_state=42)
-    svd_transformer = Pipeline([('tfidf', tfidf), ('svd', svd_model)])
-    svd_matrix = svd_transformer.fit_transform(context)
-    return svd_transformer, svd_matrix
+def get_nes(context):
+    ne_list = [ne for ne in st.tag(context.split()) if ne[1] != 'O']
+    return ne_list
 
 
 if __name__ == "__main__":

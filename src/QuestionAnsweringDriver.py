@@ -15,6 +15,7 @@ from collections import Counter
 import FeatureExtraction as fe
 from sklearn.metrics import pairwise_distances
 from nltk.tag import StanfordNERTagger
+# import graphlab as gl
 
 
 # # a Python object (dict):
@@ -42,47 +43,6 @@ from nltk.tag import StanfordNERTagger
 #     print(keys, '=>', db[keys])
 
 
-def get_document(question_keywords, doc_db):
-    candidate_doc = ["", ""]
-    max_len = 0
-    max_overlap = 0
-    for doc, word_set in doc_db.items():
-        cnt = collections.Counter(word_set)
-        overlap = 0
-        for keyword in question_keywords:
-            # overlap = word_set.count(keyword)
-            # overlap += cnt[keyword]
-            for item in cnt:
-                if item in keyword:
-                    overlap += cnt[item]
-        if overlap > max_overlap:
-            max_overlap = overlap
-            candidate_doc[0] = doc.document_name
-        len_of_intersection = len(set(question_keywords).intersection(word_set))
-        # print(cnt.most_common(10))
-        # len_of_intersection = len(set(question_keywords).intersection(cnt.most_common(10)))
-        if len_of_intersection > max_len:
-            max_len = len_of_intersection
-            candidate_doc[1] = doc.document_name
-    if candidate_doc[0] == candidate_doc[1]:
-        candidate_doc.remove(candidate_doc[1])
-    # add one more condition: if document name is not in question, remove it
-    matched = False
-    tmp = []
-    for candidate in candidate_doc:
-        doc_name = candidate.split(".")[0]
-        doc_name = doc_name.translate(str.maketrans('', '', string.punctuation))
-        for keyword in question_keywords:
-            keyword = keyword.translate(str.maketrans('', '', string.punctuation))
-            if keyword in doc_name:
-                matched = True
-                tmp.append(candidate)
-                break
-    if matched:
-        candidate_doc = tmp
-    return candidate_doc
-
-
 def cosine_similarity(vector1, vector2):
     if scipy.linalg.norm(vector1) == 0 or scipy.linalg.norm(vector2) == 0:
         return -1.0
@@ -90,36 +50,33 @@ def cosine_similarity(vector1, vector2):
     return score
 
 
-def get_passages(passages, doc_tf_idf, question_tf_idf):
-    candidate_passages = {}
+def get_document(doc_names, documents, doc_tf_idf, question_tf_idf):
+    candidate_documents = {}
     i = 0
     for vector in doc_tf_idf:
         sim_score = cosine_similarity(vector.todense(), question_tf_idf.todense())
         # print("The sim score is: " + str(sim_score))
-        candidate_passages[passages[i]] = sim_score
-        # if sim_score > 0.08:
-        #     candidate_passages[passages[i]] = sim_score
+        candidate_documents[(doc_names[i], documents[i])] = sim_score
         i += 1
-    cnt = Counter(candidate_passages)
-    candidates = []
-    for candidate_passage in cnt.most_common(6):
-        candidates.append(candidate_passage[0])
-    return candidates
+    cnt = Counter(candidate_documents)
+    candidates_doc_names = []
+    candidate_passages = []
+    for candidate_document in cnt.most_common(6):
+        candidates_doc_names.append(candidate_document[0][0])
+        candidate_passages.append(candidate_document[0][1])
+    return candidates_doc_names, candidate_passages
 
 
-# def get_passages2(passages, svd_matrix, query_vector):
-#     distance_matrix = pairwise_distances(query_vector,
-#                                          svd_matrix,
-#                                          metric='cosine',
-#                                          n_jobs=-1)
-#     candidate_passages = {}
-#     for i, distance in enumerate(distance_matrix):
-#         candidate_passages[passages[i]] = distance
-#     cnt = Counter(candidate_passages)
-#     candidates = []
-#     for candidate_passage in cnt.most_common(6):
-#         candidates.append(candidate_passage[0])
-#     return candidates
+def get_passages(answer_types, passages, doc_ner):
+    candidate_passages = []
+    i = 0
+    for passage in passages:
+        doc_nes = set(doc_ner[i])
+        overlap = answer_types.intersection(doc_nes)
+        if overlap:
+            candidate_passages.append(passage)
+    i += 1
+    return candidate_passages
 
 
 if __name__ == "__main__":
@@ -132,10 +89,7 @@ if __name__ == "__main__":
     path = sys.argv[1]
     if path[-1] != "/":
         path = path + "/"
-
-    # Update_or_not need to be set to True after modifying get_word_set_using_spacy()
-    # to re-preprocess the whole database
-    document_db = pp.preprocess(path, update_or_not=False)
+    files = [join(path, f) for f in listdir(path) if isfile(join(path, f)) and join(path, f).endswith(".txt")]
 
     questions = ["Who founded Apple Inc.?", "Who supported Apple in creating a new computing platform?",
                 "When was Apple Inc. founded?", "When did Apple go public?", "Where is Apple’s headquarters?",
@@ -158,86 +112,44 @@ if __name__ == "__main__":
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
                "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
-    # for question in questions:
-    #     tokens = question.split()
-    #     print(st.tag(tokens))
-    #     print(qp.identify_question_type(qp.extract_wh_word(tokens), tokens))
+    doc_names, documents, tfidf, doc_tf_idf = pp.get_ti_idf_vector(files)
 
-    # Preprocess all the docs in advance(might take a lot of time)
-    # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
-    # to re-preprocess the document
-    # p_t_t_dict = pp.preprocess_ti_idf_vector_for_all_files(path, update_or_not=False)
-
-    jar = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/stanford-ner.jar'
-    model = '/Users/jiaxizhao/Downloads/stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+    jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
+    model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
     st = StanfordNERTagger(model, jar)
 
     for i, question in enumerate(questions):
+        # use tf-idf to get candidate documents and the results are ordered by their rankings
+        question_tf_idf = tfidf.transform([question])
+        candidate_documents, documents = get_document(doc_names, documents, doc_tf_idf, question_tf_idf)
+        print(str(i) + ". Candidate documents: ")
+        print(candidate_documents)
+
+        # Question Processing: get query keywords and answer types
         question_keywords = qp.get_keywords(question)
-        doc_names = get_document(question_keywords, document_db)
-        # print(str(i + 1) + ": " + doc_names[0] + ", " + doc_names[1])
-        print(str(i + 1) + ": " + ','.join([doc_name for doc_name in doc_names]))
-        print(" Correct answer is: " + answer_documents[i])
-        for doc_name in doc_names:
+        print(question_keywords)
+        answer_types = set([ne[1] for ne in qp.get_named_entities(question)])
+        question_type, answer_type = qp.identify_question_type(qp.extract_wh_word(question.split()), question.split())
+        answer_types = answer_types.union(set(question_type))
+        print(answer_types)
 
-            # Update_or_not need to be set to True after modifying get_all_word_set_using_spacy()
-            # to re-preprocess the document
-            paragraphs, tfidf, doc_tf_idf = pp.process_ti_idf_vector_for_single_file(path, doc_name, update_or_not=False)
+        # Passage Retrieval
+        # First use Answer types filter out passages without relevant entities
+        # Then use features to rank passages
+        # for doc_name in candidate_documents:
+        #     paragraphs, doc_ner = pp.process_ner_for_single_file(path, doc_name, update_or_not=False)
+        #     candidate_passages = get_passages(answer_types, paragraphs, doc_ner)
 
-            # If already preprocess all the docs in advance, can just read the tuple from the p_t_t_dict
-            # p_t_t_tuple = p_t_t_dict[doc_name]
-            # paragraphs, tfidf, doc_tf_idf = p_t_t_tuple[0], p_t_t_tuple[1], p_t_t_tuple[2]
-
-            question_tf_idf = tfidf.transform([question])
-            # print(question_tf_idf)
-            paragraphs = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
-            print(paragraphs)
-            for paragraph in paragraphs:
-                # print(paragraph)
-                if answers[i] in paragraph:
-                    print("True")
-
-            tokens = question.split()
-            ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)
-            tuple_candidate_pool = []
-            for paragraph in paragraphs:
-                sentences = fe.get_sentences(paragraph)
-                for sentence in sentences:
-                    ner_tuple_list = st.tag(sentence.split())
-                    for ner_tuple in ner_tuple_list:
-                        if ner_tuple[1] in ner_list:
-                            tuple_candidate_pool.append(ner_tuple)
-            print(tuple_candidate_pool)
-
-    # for i, question in enumerate(questions):
-    #     question_keywords = qp.get_keywords(question)
-    #     doc_names = get_document(question_keywords, pp.document_db)
-    #     # print(str(i + 1) + ": " + doc_names[0] + ", " + doc_names[1])
-    #     print(str(i + 1) + ": " + ','.join([doc_name for doc_name in doc_names]))
-    #     print(" Correct answer is: " + answer_documents[i])
-    #     for doc_name in doc_names:
-    #         file = join(folder, doc_name)
-    #         f = open(file, "r")
-    #         paragraphs, svd_transformer, svd_matrix = pp.calc_svd_vector(f.read())
-    #         query_vector = svd_transformer.transform([question])
-    #         # print(question_tf_idf)
-    #         paragraphs = get_passages2(paragraphs, svd_matrix, query_vector)
-    #         print(paragraphs)
-    #         for paragraph in paragraphs:
-    #             if answers[i] in paragraph:
-    #                 print("True")
-
-    # question = "When did Steve Jobs die?"
-    # question_keywords = qp.get_keywords(question)
-    # doc_names = get_document(question_keywords, pp.document_db)
-    # print("The most matched document is: " + doc_names[0] + ", " + doc_names[1])
-    # for doc_name in doc_names:
-    #     file = join(folder, doc_name)
-    #     f = open(file, "r")
-    #     paragraphs, tfidf, doc_tf_idf = pp.calc_ti_idf_vector(f.read())
-    #     question_tf_idf = tfidf.transform([question])
-    #     print(question_tf_idf)
-    #     paragraph = get_passages(paragraphs, doc_tf_idf, question_tf_idf)
-    #     print(paragraph)
+        # tokens = question.split()
+        # ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)
+        # tuple_candidate_pool = []
+        # for paragraph in paragraphs:
+        #     sentences = fe.get_sentences(paragraph)
+        #     for sentence in sentences:
+        #         ner_tuple_list = st.tag(sentence.split())
+        #         for ner_tuple in ner_tuple_list:
+        #             if ner_tuple[1] in ner_list:
+        #                 tuple_candidate_pool.append(ner_tuple)
+        # print(tuple_candidate_pool)
 
 

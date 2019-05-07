@@ -3,3 +3,4 @@ venv
 .DS_Store
 *.pyc
 Pickle
+stanford-ner-2018-10-16
