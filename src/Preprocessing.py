@@ -89,6 +89,25 @@ def process_ner_for_single_file(path, doc_name, update_or_not):
     return p_t_t_tuple[0], p_t_t_tuple[1]  # paragraphs, nes_lists
 
 
+def preprocess_passage(passage, doc_name, passage_num):
+    saved_passage_path = "Pickle/" + doc_name.split(".")[0] + str(passage_num) + ".obj"
+
+    # Check if the db exixts or not.
+    exists = os.path.isfile(saved_passage_path)
+    if not exists or update_or_not:
+        sen = passage.split('. ')
+        sen_word_set = []
+        for s in sen:
+            word_set = fe.get_word_set_using_spacy(sentence)
+            sen_word_set.append((s, word_set))
+        file_handler = open(saved_passage_path, 'wb')
+        pickle.dump(sen_word_set, file_handler)
+    else:
+        file_handler = open(saved_passage_path, 'rb')
+        sen_word_set = pickle.load(file_handler)
+    return sen_word_set  # paragraphs, nes_lists
+
+
 def get_ti_idf_vector(paths):
     exists = os.path.isfile(saved_ti_idf_path)
     if not exists:
@@ -129,7 +148,7 @@ def lower_tokens(words):
 
 
 def get_named_entities(passage):
-    return fe.get_nes(passage)
+    return fe.get_nes_with_spacy(passage)
 
 
 def get_named_entities_with_spacy(passage):

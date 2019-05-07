@@ -14,7 +14,6 @@ import string
 from collections import Counter
 import FeatureExtraction as fe
 from sklearn.metrics import pairwise_distances
-from nltk.tag import StanfordNERTagger
 from BM25 import BM25Okapi
 
 
@@ -91,16 +90,16 @@ if __name__ == "__main__":
         path = path + "/"
     files = [join(path, f) for f in listdir(path) if isfile(join(path, f)) and join(path, f).endswith(".txt")]
 
-    questions = ["Who founded Apple Inc.?", "Who supported Apple in creating a new computing platform?",
-                "When was Apple Inc. founded?", "When did Apple go public?", "Where is Apple’s headquarters?",
-                "Where did Apple open its first retail store?", "When did Abraham Lincoln die?",
-                "Where did Thomas Lincoln purchase farms?", "When was the Gettysburg address by Abraham Lincoln?",
-                "Who founded UTD?", "When was UTD established?", "Where was Melinda born?",
-                "Where is the birth place of Oprah Winfrey?", "Where is the headquarters of AT&T?",
-                "Where did AT&T spread to South America?", "When did Warren Buffett buy Berkshire Hathaway's shares?",
-                "When did Steve Jobs die?", "Where is the headquarters of Exxon Mobil?",
-                "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?",
-                 "Who shot Abraham Lincoln?", "Where is UTD located?"]
+    # questions = ["Who founded Apple Inc.?", "Who supported Apple in creating a new computing platform?",
+    #             "When was Apple Inc. founded?", "When did Apple go public?", "Where is Apple’s headquarters?",
+    #             "Where did Apple open its first retail store?", "When did Abraham Lincoln die?",
+    #             "Where did Thomas Lincoln purchase farms?", "When was the Gettysburg address by Abraham Lincoln?",
+    #             "Who founded UTD?", "When was UTD established?", "Where was Melinda born?",
+    #             "Where is the birth place of Oprah Winfrey?", "Where is the headquarters of AT&T?",
+    #             "Where did AT&T spread to South America?", "When did Warren Buffett buy Berkshire Hathaway's shares?",
+    #             "When did Steve Jobs die?", "Where is the headquarters of Exxon Mobil?",
+    #             "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?",
+    #              "Who shot Abraham Lincoln?", "Where is UTD located?"]
     answer_documents = ["AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt",
                "AbrahamLincoln.txt", "AbrahamLincoln.txt", "AbrahamLincoln.txt", "UTD.txt", "UTD.txt",
                "MelindaGates.txt", "OprahWifrey.txt", "AT_T.txt", "AT_T.txt", "Berkshire_Hathaway.txt",
@@ -112,12 +111,7 @@ if __name__ == "__main__":
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
                "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
-    jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
-    # model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
-    model = 'stanford-ner-2018-10-16/classifiers/english.muc.7class.distsim.crf.ser.gz'
-    st = StanfordNERTagger(model, jar)
-
-    # questions = ["When did Apple go public?"]
+    questions = ["When did Apple go public?"]
     # test = "Apple Computer Company was founded on April 1, 1976, by Steve Jobs, Steve Wozniak, and Ronald Wayne. The " \
     #        "company's first product is the Apple I, a computer designed and hand-built entirely by Wozniak, and " \
     #        "first shown to the public at the Homebrew Computer Club. Apple I was sold as a motherboard " \
@@ -142,7 +136,7 @@ if __name__ == "__main__":
         answer_types = answer_types.union(set(question_type))
         print(answer_types)
 
-        # Passage Retrieval
+        # Passage Retrieval and Sentence Selection
         # First use Answer types filter out passages without relevant entities
         # Then use features to rank passages
         candidate_sentences = []

@@ -189,9 +189,11 @@ def get_nes(context):
 def get_nes_with_spacy(context):
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(context)
+    named_entities_list = []
     for ent in doc.ents:
-        print(ent.text, ent.start_char, ent.end_char, ent.label_)
-    return doc.ents
+        print((ent.text, ent.label_))
+        named_entities_list.append((ent.text, ent.label_))
+    return named_entities_list
 
 
 if __name__ == "__main__":
