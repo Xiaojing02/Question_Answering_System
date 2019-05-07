@@ -112,17 +112,16 @@ if __name__ == "__main__":
                "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
                "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
 
-    doc_names, documents, tfidf, doc_tf_idf = pp.get_ti_idf_vector(files)
-
     jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
     model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
     st = StanfordNERTagger(model, jar)
 
     for i, question in enumerate(questions):
         # use tf-idf to get candidate documents and the results are ordered by their rankings
+        doc_names, documents, tfidf, doc_tf_idf = pp.get_ti_idf_vector(files)
         question_tf_idf = tfidf.transform([question])
         candidate_documents, documents = get_document(doc_names, documents, doc_tf_idf, question_tf_idf)
-        print(str(i) + ". Candidate documents: ")
+        print(str(i + 1) + ". Candidate documents: ")
         print(candidate_documents)
 
         # Question Processing: get query keywords and answer types
@@ -136,9 +135,9 @@ if __name__ == "__main__":
         # Passage Retrieval
         # First use Answer types filter out passages without relevant entities
         # Then use features to rank passages
-        # for doc_name in candidate_documents:
-        #     paragraphs, doc_ner = pp.process_ner_for_single_file(path, doc_name, update_or_not=False)
-        #     candidate_passages = get_passages(answer_types, paragraphs, doc_ner)
+        for doc_name in candidate_documents:
+            paragraphs, doc_ner = pp.process_ner_for_single_file(path, doc_name, update_or_not=False)
+            candidate_passages = get_passages(answer_types, paragraphs, doc_ner)
 
         # tokens = question.split()
         # ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)

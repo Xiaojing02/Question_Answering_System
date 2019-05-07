@@ -90,19 +90,27 @@ def process_ner_for_single_file(path, doc_name, update_or_not):
 
 
 def get_ti_idf_vector(paths):
-    documents = []
-    for path in paths:
-        f = open(path, "r")
-        data = f.read()
-        documents.append(data)
-    print("Calculating ti idf")
-    tfidf, tfs = calc_ti_idf_vector(documents)
-    files = []
-    for path in paths:
-        if path.endswith(".txt"):
-            doc_name = path.split("/")[1]
-            files.append(doc_name)
-    return files, documents, tfidf, tfs  # document_name_list, documents, tfidf, tfs
+    exists = os.path.isfile(saved_ti_idf_path)
+    if not exists:
+        documents = []
+        for path in paths:
+            f = open(path, "r")
+            data = f.read()
+            documents.append(data)
+        print("Calculating ti idf")
+        tfidf, tfs = calc_ti_idf_vector(documents)
+        files = []
+        for path in paths:
+            if path.endswith(".txt"):
+                doc_name = path.split("/")[1]
+                files.append(doc_name)
+        p_t_t_tuple = (files, documents, tfidf, tfs)
+        file_handler = open(saved_ti_idf_path, 'wb')
+        pickle.dump(p_t_t_tuple, file_handler)
+    else:
+        file_handler = open(saved_ti_idf_path, 'rb')
+        p_t_t_tuple = pickle.load(file_handler)
+    return p_t_t_tuple[0], p_t_t_tuple[1], p_t_t_tuple[2], p_t_t_tuple[3]  # document_name_list, documents, tfidf, tfs
 
 
 def get_paragraphs(document):
