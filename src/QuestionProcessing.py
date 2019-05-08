@@ -79,7 +79,7 @@ def identify_question_type(wh, q_words):
     elif wh == 'where':
         if 'headquarter' in raw_q_sent or 'capital' in raw_q_sent:
             return ['GPE'], 'headquarter'
-        return ['LOC', 'ORDINAL', 'OTHER'], 'location'
+        return ['LOC', 'ORDINAL', 'OTHER', 'GPE'], 'location'
     elif wh == 'how':
         if 'old' in raw_q_sent or 'large' in raw_q_sent:
             return ['CARDINAL'], 'number'
