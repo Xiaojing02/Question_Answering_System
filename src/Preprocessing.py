@@ -180,6 +180,8 @@ def preprocess_get_sent_to_doc_and_realsent_map(path):
                         sent_to_realsent_map[key] = sentence
         file_handler = open(saved_sent_to_doc_map_path, 'wb')
         pickle.dump(sent_to_doc_map, file_handler)
+        file_handler = open(saved_sent_to_realsent_map_path, 'wb')
+        pickle.dump(sent_to_realsent_map, file_handler)
     else:
         file_handler = open(saved_sent_to_doc_map_path, 'rb')
         file_handler2 = open(saved_sent_to_realsent_map_path, 'rb')

@@ -91,78 +91,6 @@ if __name__ == "__main__":
         path = path + "/"
     files = [join(path, f) for f in listdir(path) if isfile(join(path, f)) and join(path, f).endswith(".txt")]
 
-    # questions = ["Who founded Apple Inc.?", "Who supported Apple in creating a new computing platform?",
-    #             "When was Apple Inc. founded?", "When did Apple go public?", "Where is Apple’s headquarters?",
-    #             "Where did Apple open its first retail store?", "When did Abraham Lincoln die?",
-    #             "Where did Thomas Lincoln purchase farms?", "When was the Gettysburg address by Abraham Lincoln?",
-    #             "Who founded UTD?", "When was UTD established?", "Where was Melinda born?",
-    #             "Where is the birth place of Oprah Winfrey?", "Where is the headquarters of AT&T?",
-    #             "Where did AT&T spread to South America?", "When did Warren Buffett buy Berkshire Hathaway's shares?",
-    #             "When did Steve Jobs die?", "Where is the headquarters of Exxon Mobil?",
-    #             "When was ExxonMobile created?", "Where is the headquarters of Amazon.com?",
-    #              "Who shot Abraham Lincoln?", "Where is UTD located?"]
-    # answer_documents = ["AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt", "AppleInc.txt",
-    #            "AbrahamLincoln.txt", "AbrahamLincoln.txt", "AbrahamLincoln.txt", "UTD.txt", "UTD.txt",
-    #            "MelindaGates.txt", "OprahWifrey.txt", "AT_T.txt", "AT_T.txt", "Berkshire_Hathaway.txt",
-    #            "LaurenePowellJobs.txt", "ExxonMobil.txt", "ExxonMobil.txt", "Amazon_com.txt",
-    #                     "AbrahamLincoln.txt", "UTD.txt"]
-    # answers = ["founded by Steve Jobs", "Motorola formed the AIM alliance with the goal of creating", "Apple was founded by Steve Jobs",
-    #            "went public in 1980", "Cupertino, California", "retail stores in Virginia and California",
-    #            "April 15", "leased farms in Kentucky", "November 19, 1863", "Eugene", "creating the University of Texas at Dallas",
-    #            "Melinda Ann French was born", "Mississippi", "multinational conglomerate", "September 2013", "Warren Buffett began buying stock",
-    #            "October 5, 2011", "Irving", "formed in 1999", "Seattle", "John Wilkes Booth", "Richardson"]
-
-    # questions = ["When did Apple go public?"]
-    # test = "Apple Computer Company was founded on April 1, 1976, by Steve Jobs, Steve Wozniak, and Ronald Wayne. The " \
-    #        "company's first product is the Apple I, a computer designed and hand-built entirely by Wozniak, and " \
-    #        "first shown to the public at the Homebrew Computer Club. Apple I was sold as a motherboard " \
-    #        "(with CPU, RAM, and basic textual-video chips)—a base kit concept which would now not be marketed " \
-    #        "as a complete personal computer. The Apple I went on sale in July 1976 and was market-priced at " \
-    #        "$666.66 ($2,935 in 2018 dollars, adjusted for inflation)."
-    # print(pp.get_named_entities(test))
-    # questions = []
-    # for i, question in enumerate(questions):
-    #     # use tf-idf to get candidate documents and the results are ordered by their rankings
-    #     doc_names, documents, tfidf, doc_tf_idf = pp.get_ti_idf_vector(files)
-    #     question_tf_idf = tfidf.transform([question])
-    #     candidate_documents, documents = get_document(doc_names, documents, doc_tf_idf, question_tf_idf)
-    #     print(str(i + 1) + ". Candidate documents: ")
-    #     print(candidate_documents)
-    #
-    #     # Question Processing: get query keywords and answer types
-    #     question_keywords = qp.get_keywords(question)
-    #     print(question_keywords)
-    #     answer_types = set([ne[1] for ne in qp.get_named_entities(question)])
-    #     question_type, answer_type = qp.identify_question_type(qp.extract_wh_word(question.split()), question.split())
-    #     answer_types = answer_types.union(set(question_type))
-    #     print(answer_types)
-    #
-    #     # Passage Retrieval and Sentence Selection
-    #     # First use Answer types filter out passages without relevant entities
-    #     # Then use features to rank passages
-    #     candidate_sentences = []
-    #     sentences = []
-    #     for doc_name in candidate_documents:
-    #         paragraphs, doc_ner = pp.process_ner_for_single_file(path, doc_name, update_or_not=False)
-    #         candidate_passages = get_passages(answer_types, paragraphs, doc_ner)
-    #         for passage in candidate_passages:
-    #             sen = passage.split('. ')
-    #             for s in sen:
-    #                 sentences.append(s)
-    #     corpus = []
-    #     for sentence in sentences:
-    #             word_set = fe.get_word_set_using_spacy(sentence)
-    #             corpus.append(word_set)
-    #     if len(corpus) != 0:
-    #         bm25 = BM25Okapi(corpus)
-    #         question_word_set = fe.get_word_set_using_spacy(question)
-    #         doc_scores = bm25.get_scores(question_word_set)
-    #         candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=5)
-    #         print(candidate_sentences)
-    #     else:
-    #         print("Answer is not found.")
-
-
     #task3
     input_path = sys.argv[2]
     # Process at the beginning of task3
@@ -172,7 +100,7 @@ if __name__ == "__main__":
         for line in file:
             line = line.replace(u'\ufeff', '')
             questions.append(line.rstrip('\n'))
-
+    print("Finished load map")
     answer_list = []
     for i, question in enumerate(questions):
         # use tf-idf to get candidate documents and the results are ordered by their rankings
@@ -212,7 +140,7 @@ if __name__ == "__main__":
             bm25 = BM25Okapi(corpus)
             question_word_set = fe.get_word_set_using_spacy(question)
             doc_scores = bm25.get_scores(question_word_set)
-            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=5)
+            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=3)
             print(candidate_sentences)
             # TODO use candidate_sentences to get sentences and doc name using sent_to_doc_map, sent_to_realsent_map
             for candidate_sentence in candidate_sentences:
