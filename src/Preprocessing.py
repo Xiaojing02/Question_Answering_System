@@ -14,7 +14,8 @@ import pickle
 saved_db_path = 'Pickle/db.obj'
 saved_ti_idf_path = 'Pickle/ti_idf.obj'
 saved_ner_path = 'Pickle/named_entities.obj'
-
+saved_sent_to_doc_map_path = 'Pickle/sent_to_doc_map.obj'
+saved_sent_to_realsent_map_path = 'Pickle/sent_to_para_maps.obj'
 
 # use spaCy processing pipeline to process original documents
 def preprocess(path, update_or_not):
@@ -153,4 +154,36 @@ def get_named_entities(passage):
 
 def get_named_entities_with_spacy(passage):
     fe.get_nes_with_spacy(passage)
+
+
+def preprocess_get_sent_to_doc_and_realsent_map(path):
+    sent_to_doc_map = {}
+    sent_to_realsent_map = {}
+    # Check if the db exixts or not.
+    exists1 = os.path.isfile(saved_sent_to_doc_map_path)
+    exists2 = os.path.isfile(saved_sent_to_realsent_map_path)
+
+    if not exists1 or not exists2:
+        files = [join(path, f) for f in listdir(path) if isfile(join(path, f))]
+        for file in files:
+            if file.endswith(".txt"):
+                f = open(file, "r")
+                data = f.read()
+                doc_name = file.split("/")[1]
+                paragraphs = get_paragraphs(data)
+                for paragraph in paragraphs:
+                    sentences = paragraph.split('. ')
+                    for sentence in sentences:
+                        word_set = fe.get_word_set_using_spacy(sentence)
+                        key = str(word_set)
+                        sent_to_doc_map[key] = doc_name
+                        sent_to_realsent_map[key] = sentence
+        file_handler = open(saved_sent_to_doc_map_path, 'wb')
+        pickle.dump(sent_to_doc_map, file_handler)
+    else:
+        file_handler = open(saved_sent_to_doc_map_path, 'rb')
+        file_handler2 = open(saved_sent_to_realsent_map_path, 'rb')
+        sent_to_doc_map = pickle.load(file_handler)
+        sent_to_realsent_map = pickle.load(file_handler2)
+    return sent_to_doc_map, sent_to_realsent_map
 
