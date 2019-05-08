@@ -106,12 +106,12 @@ def get_general_hypernyms(sense):
 
 
 def get_meronyms(sense):
-    meronym_set = sense.member_meronyms()
+    meronym_set = sense.part_meronyms()
     return meronym_set
 
 
 def get_holonyms(sense):
-    holonym_set = sense.member_meronyms()
+    holonym_set = sense.member_holonyms()
     return holonym_set
 
 
@@ -227,6 +227,7 @@ if __name__ == "__main__":
 
     [to_nltk_tree(sent.root).pretty_print() for sent in doc.sents]
     # get_parse_tree(sentences, nlp, 5)
+    print(get_synonym('dog'))
     word = wn.synset('dog.n.01')
     print(get_hypernyms(word))
     print(get_hyponyms(word))
