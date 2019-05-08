@@ -17,6 +17,7 @@ from spacy import displacy
 import webbrowser
 from nltk.corpus import wordnet as wn
 from nltk.tag import StanfordNERTagger
+from nltk import Tree
 
 
 jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
@@ -38,16 +39,6 @@ def remove_stopwords(wordsList):
     wordsList = [w for w in wordsList if not w in stopwords]
     return wordsList
 
-
-# def get_words(sentence):
-#     lowers = sentence.lower()
-#     # no_punctuation = lowers.translate(str.maketrans(string.punctuation, ' '*len(string.punctuation)))
-#     no_punctuation = lowers.translate(str.maketrans('', '', string.punctuation))
-#     tokens = word_tokenize(no_punctuation)
-#     # print(tokens)
-#     # tokens = word_tokenize(sentence.lower())
-#     tokens = remove_stopwords(tokens)
-#     return tokens
 
 def get_words(doc):
     token_text_list = [token.text for token in doc]
@@ -198,20 +189,44 @@ if __name__ == "__main__":
     document_name = "AppleInc.txt"
     f = open(join(path, document_name), "r")
     data = f.read()
+    data = data.replace(u'\ufeff', '')
     doc = nlp(data)
     sentences = get_sentences_using_spacy(doc)
+    sentences = list(sentences)
     for sentence in sentences:
         print(sentence)
     tokens = get_words(doc)
-    for token in tokens:
-        print(token)
+    print(tokens)
+    # for token in tokens:
+    #     print(token)
     lemmatized_tokens = get_lemmars(doc)
-    for lemmatized_token in lemmatized_tokens:
-        print(lemmatized_token)
+    print(lemmatized_tokens)
+    # for lemmatized_token in lemmatized_tokens:
+    #     print(lemmatized_token)
     POS_list = get_pos(doc)
-    for POS in POS_list:
-        print(POS)
-    get_parse_tree(sentences, nlp, 5)
+    print(POS_list)
+    print(type(sentences[0]))
+    doc = nlp(str(sentences[0]))
+
+
+    # def to_nltk_tree(node):
+    #     if node.n_lefts + node.n_rights > 0:
+    #         return Tree(node.orth_, [to_nltk_tree(child) for child in node.children])
+    #     else:
+    #         return node.orth_
+    def tok_format(tok):
+        return "_".join([tok.orth_, tok.tag_])
+
+
+    def to_nltk_tree(node):
+        if node.n_lefts + node.n_rights > 0:
+            return Tree(tok_format(node), [to_nltk_tree(child) for child in node.children])
+        else:
+            return tok_format(node)
+
+
+    [to_nltk_tree(sent.root).pretty_print() for sent in doc.sents]
+    # get_parse_tree(sentences, nlp, 5)
     word = wn.synset('dog.n.01')
     print(get_hypernyms(word))
     print(get_hyponyms(word))

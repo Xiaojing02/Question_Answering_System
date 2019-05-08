@@ -140,7 +140,7 @@ if __name__ == "__main__":
             bm25 = BM25Okapi(corpus)
             question_word_set = fe.get_word_set_using_spacy(question)
             doc_scores = bm25.get_scores(question_word_set)
-            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=5)
+            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=10)
             # print(candidate_sentences)
             # TODO use candidate_sentences to get sentences and doc name using sent_to_doc_map, sent_to_realsent_map
             for candidate_sentence in candidate_sentences:
