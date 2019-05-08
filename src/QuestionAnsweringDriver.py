@@ -139,7 +139,6 @@ if __name__ == "__main__":
         # Passage Retrieval and Sentence Selection
         # First use Answer types filter out passages without relevant entities
         # Then use features to rank passages
-        candidate_sentences = []
         sentences = []
         for doc_name in candidate_documents:
             paragraphs, doc_ner = pp.process_ner_for_single_file(path, doc_name, update_or_not=False)
@@ -152,6 +151,7 @@ if __name__ == "__main__":
         for sentence in sentences:
                 word_set = fe.get_word_set_using_spacy(sentence)
                 corpus.append(word_set)
+        print("done")
         if len(corpus) != 0:
             bm25 = BM25Okapi(corpus)
             question_word_set = fe.get_word_set_using_spacy(question)

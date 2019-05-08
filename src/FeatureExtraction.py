@@ -22,6 +22,7 @@ from nltk.tag import StanfordNERTagger
 jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
 model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
 st = StanfordNERTagger(model, jar)
+nlp = spacy.load('en_core_web_sm')
 
 
 def get_sentences(context):
@@ -126,7 +127,6 @@ def get_holonyms(sense):
 
 def get_word_set_using_spacy(input):
     input = re.sub('\n', '', input)
-    nlp = spacy.load('en_core_web_sm')
     doc = nlp(input)
     stop_words = set(stopwords.words('english'))
     tokens = []
@@ -161,7 +161,6 @@ def convert(word):
 # get word and synonyms and noun and verb sets
 def get_all_word_set_using_spacy(input):
     input = re.sub('\n', '', input)
-    nlp = spacy.load('en_core_web_sm')
     doc = nlp(input)
     stop_words = set(stopwords.words('english'))
     tokens = []
@@ -187,7 +186,6 @@ def get_nes(context):
 
 
 def get_nes_with_spacy(context):
-    nlp = spacy.load('en_core_web_sm')
     doc = nlp(context)
     named_entities_list = []
     for ent in doc.ents:
