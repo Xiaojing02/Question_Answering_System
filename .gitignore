@@ -5,3 +5,4 @@ venv
 Pickle
 stanford-ner-2018-10-16
 StanfordNerPickle
+output.json

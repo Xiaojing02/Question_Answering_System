@@ -112,13 +112,13 @@ if __name__ == "__main__":
 
         # Question Processing: get query keywords and answer types
         question_keywords = qp.get_keywords(question)
-        print(question_keywords)
+        # print(question_keywords)
         answer_types = set([ne[1] for ne in qp.get_named_entities(question)])
         question_type, answer_type = qp.identify_question_type(qp.extract_wh_word(question.split()),
                                                                question.split())
-        print(question_type)
+        # print(question_type)
         answer_types = answer_types.union(set(question_type))
-        print(answer_types)
+        # print(answer_types)
 
         # Passage Retrieval and Sentence Selection
         # First use Answer types filter out passages without relevant entities
@@ -140,9 +140,15 @@ if __name__ == "__main__":
             bm25 = BM25Okapi(corpus)
             question_word_set = fe.get_word_set_using_spacy(question)
             doc_scores = bm25.get_scores(question_word_set)
-            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=10)
+            candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=3)
             # print(candidate_sentences)
             # TODO use candidate_sentences to get sentences and doc name using sent_to_doc_map, sent_to_realsent_map
+            answer_dict = {}
+            answer_dict["Question"] = question
+            answer_dict["answers"] = {}
+            answer_dict["sentences"] = {}
+            answer_dict["documents"] = {}
+            j = 1
             for candidate_sentence in candidate_sentences:
                 key = str(candidate_sentence)
                 sen_ner = [ne for ne in qp.get_named_entities(sent_to_realsent_map[key])]
@@ -154,20 +160,17 @@ if __name__ == "__main__":
                         answers.append(ne[0])
                 doc_name = sent_to_doc_map[key]
                 sentence = sent_to_realsent_map[key]
-                answer_dict = {}
-                answer_dict["Question"] = question
-                answer_dict["answers"] = {}
-                for j in range(len(answers)):
-                    answer_dict["answers"][str(j)] = answers[j]
-                answer_dict["sentences"] = sentence
-                answer_dict["documents"] = doc_name
-                print(answer_dict)
 
+                answer_dict["answers"][str(j)] = ', '.join(answers)
+                answer_dict["sentences"][str(j)] = sentence
+                answer_dict["documents"][str(j)] = doc_name
+                j += 1
+            print(answer_dict)
         else:
             print("Answer is not found.")
             answer_dict = {}
 
-        # answer_list.append(answer_dict)
+        answer_list.append(answer_dict)
 
     #
     # answer_list = []
@@ -177,22 +180,8 @@ if __name__ == "__main__":
     # answer_dict["sentences"] = [1,2]
     # answer_dict["documents"] = [1,3]
     # answer_list.append(answer_dict)
-    # with open('output.json', 'w') as outfile:
-    #     json.dump(answer_list, outfile)
+    with open('output.json', 'w') as outfile:
+        json.dump(answer_list, outfile)
 
-
-
-
-        # tokens = question.split()
-        # ner_list, keyword = qp.identify_question_type(qp.extract_wh_word(tokens), tokens)
-        # tuple_candidate_pool = []
-        # for paragraph in paragraphs:
-        #     sentences = fe.get_sentences(paragraph)
-        #     for sentence in sentences:
-        #         ner_tuple_list = st.tag(sentence.split())
-        #         for ner_tuple in ner_tuple_list:
-        #             if ner_tuple[1] in ner_list:
-        #                 tuple_candidate_pool.append(ner_tuple)
-        # print(tuple_candidate_pool)
 
 
