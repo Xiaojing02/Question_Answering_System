@@ -1,9 +1,5 @@
-import nltk
-import string
 import FeatureExtraction as fe
 import Preprocessing as pp
-import sys
-from collections import Counter
 
 
 WH_words = ['how', 'what', 'where', 'when', 'who', 'which']

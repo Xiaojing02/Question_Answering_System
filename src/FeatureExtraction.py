@@ -1,29 +1,17 @@
 import nltk
-from nltk import word_tokenize, sent_tokenize
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import treebank
-from nltk.corpus import PlaintextCorpusReader
-from nltk.corpus import wordnet as wn
-from nltk.parse.stanford import StanfordDependencyParser
-import string
+from nltk import sent_tokenize
 import spacy
 from nltk.corpus import stopwords
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import TruncatedSVD
-from sklearn.pipeline import Pipeline
 from os.path import join
 from spacy import displacy
-import webbrowser
 from nltk.corpus import wordnet as wn
-from nltk.tag import StanfordNERTagger
 from nltk import Tree
 
 
-jar = 'stanford-ner-2018-10-16/stanford-ner.jar'
-model = 'stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
-st = StanfordNERTagger(model, jar)
 nlp = spacy.load('en_core_web_sm')
+
 
 def get_sentences(context):
     sentences = sent_tokenize(context)
@@ -35,8 +23,8 @@ def get_sentences_using_spacy(doc):
 
 
 def remove_stopwords(wordsList):
-    stopwords = stopwords.words('english')
-    wordsList = [w for w in wordsList if not w in stopwords]
+    stopwordset = stopwords.words('english')
+    wordsList = [w for w in wordsList if not w in stopwordset]
     return wordsList
 
 
@@ -170,11 +158,6 @@ def get_tf_idf(context):
     return tfidf, tfs
 
 
-def get_nes(context):
-    ne_list = [ne for ne in st.tag(context.split()) if ne[1] != 'O']
-    return ne_list
-
-
 def get_nes_with_spacy(context):
     doc = nlp(context)
     named_entities_list = []
@@ -197,23 +180,13 @@ if __name__ == "__main__":
         print(sentence)
     tokens = get_words(doc)
     print(tokens)
-    # for token in tokens:
-    #     print(token)
     lemmatized_tokens = get_lemmars(doc)
     print(lemmatized_tokens)
-    # for lemmatized_token in lemmatized_tokens:
-    #     print(lemmatized_token)
     POS_list = get_pos(doc)
     print(POS_list)
     print(type(sentences[0]))
     doc = nlp(str(sentences[0]))
 
-
-    # def to_nltk_tree(node):
-    #     if node.n_lefts + node.n_rights > 0:
-    #         return Tree(node.orth_, [to_nltk_tree(child) for child in node.children])
-    #     else:
-    #         return node.orth_
     def tok_format(tok):
         return "_".join([tok.orth_, tok.tag_])
 

@@ -1,46 +1,13 @@
-import json
-import PickleUtils as pu
 import sys
 from os import listdir
 from os.path import isfile, join
-import collections
-from Sentence import Sentence
 import Preprocessing as pp
 import QuestionProcessing as qp
-import numpy.matlib
-import numpy as np
 import scipy
-import string
 from collections import Counter
 import FeatureExtraction as fe
-from sklearn.metrics import pairwise_distances
-from BM25 import BM25Okapi
+from rank_bm25 import BM25Okapi
 import json
-import spacy
-
-# # a Python object (dict):
-# x = {
-#     "name": "John",
-#     "age": 30,
-#     "city": "New York"
-# }
-#
-# # convert into JSON:
-# y = json.dumps(x)
-#
-# # the result if a JSON string:
-# print(y)
-#
-#
-# folder = sys.argv[1]
-# if folder[-1] != "/":
-#     folder = folder + "/"
-# db = pu.loadData(folder + "database.pickle")  # has some problem: AttributeError:
-# # class Sentence has no attribute '__new__'
-# # Note: Passing pickles between different versions of
-# #  Python can cause trouble, so try to have the same version on both platforms.
-# for keys in db:
-#     print(keys, '=>', db[keys])
 
 
 def cosine_similarity(vector1, vector2):
@@ -55,7 +22,6 @@ def get_document(doc_names, documents, doc_tf_idf, question_tf_idf):
     i = 0
     for vector in doc_tf_idf:
         sim_score = cosine_similarity(vector.todense(), question_tf_idf.todense())
-        # print("The sim score is: " + str(sim_score))
         candidate_documents[(doc_names[i], documents[i])] = sim_score
         i += 1
     cnt = Counter(candidate_documents)
@@ -141,8 +107,6 @@ if __name__ == "__main__":
             question_word_set = fe.get_word_set_using_spacy(question)
             doc_scores = bm25.get_scores(question_word_set)
             candidate_sentences = bm25.get_top_n(question_word_set, corpus, n=3)
-            # print(candidate_sentences)
-            # TODO use candidate_sentences to get sentences and doc name using sent_to_doc_map, sent_to_realsent_map
             answer_dict = {}
             answer_dict["Question"] = question
             answer_dict["answers"] = {}
@@ -172,14 +136,6 @@ if __name__ == "__main__":
 
         answer_list.append(answer_dict)
 
-    #
-    # answer_list = []
-    # answer_dict = {}
-    # answer_dict["qs"]["Question"] = "dfsdf?"
-    # answer_dict["qs"]["answers"] = [1]
-    # answer_dict["sentences"] = [1,2]
-    # answer_dict["documents"] = [1,3]
-    # answer_list.append(answer_dict)
     with open('output.json', 'w') as outfile:
         json.dump(answer_list, outfile)
 

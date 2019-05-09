@@ -1,14 +1,8 @@
-import sys
 import os
 from os import listdir
 from os.path import isfile, join
-import collections
 import FeatureExtraction as fe
-import PickleUtils as pu
-from Sentence import Sentence
 from Document import Document
-import spacy
-from nltk.corpus import stopwords
 import pickle
 
 saved_db_path = 'Pickle/db.obj'
@@ -16,6 +10,7 @@ saved_ti_idf_path = 'Pickle/ti_idf.obj'
 saved_ner_path = 'Pickle/named_entities.obj'
 saved_sent_to_doc_map_path = 'Pickle/sent_to_doc_map.obj'
 saved_sent_to_realsent_map_path = 'Pickle/sent_to_para_maps.obj'
+
 
 # use spaCy processing pipeline to process original documents
 def preprocess(path, update_or_not):
