@@ -18,30 +18,6 @@ from BM25 import BM25Okapi
 import json
 import spacy
 
-# # a Python object (dict):
-# x = {
-#     "name": "John",
-#     "age": 30,
-#     "city": "New York"
-# }
-#
-# # convert into JSON:
-# y = json.dumps(x)
-#
-# # the result if a JSON string:
-# print(y)
-#
-#
-# folder = sys.argv[1]
-# if folder[-1] != "/":
-#     folder = folder + "/"
-# db = pu.loadData(folder + "database.pickle")  # has some problem: AttributeError:
-# # class Sentence has no attribute '__new__'
-# # Note: Passing pickles between different versions of
-# #  Python can cause trouble, so try to have the same version on both platforms.
-# for keys in db:
-#     print(keys, '=>', db[keys])
-
 
 def cosine_similarity(vector1, vector2):
     if scipy.linalg.norm(vector1) == 0 or scipy.linalg.norm(vector2) == 0:
@@ -172,14 +148,6 @@ if __name__ == "__main__":
 
         answer_list.append(answer_dict)
 
-    #
-    # answer_list = []
-    # answer_dict = {}
-    # answer_dict["qs"]["Question"] = "dfsdf?"
-    # answer_dict["qs"]["answers"] = [1]
-    # answer_dict["sentences"] = [1,2]
-    # answer_dict["documents"] = [1,3]
-    # answer_list.append(answer_dict)
     with open('output.json', 'w') as outfile:
         json.dump(answer_list, outfile)
 

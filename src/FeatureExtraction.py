@@ -209,11 +209,6 @@ if __name__ == "__main__":
     doc = nlp(str(sentences[0]))
 
 
-    # def to_nltk_tree(node):
-    #     if node.n_lefts + node.n_rights > 0:
-    #         return Tree(node.orth_, [to_nltk_tree(child) for child in node.children])
-    #     else:
-    #         return node.orth_
     def tok_format(tok):
         return "_".join([tok.orth_, tok.tag_])
 
@@ -226,7 +221,6 @@ if __name__ == "__main__":
 
 
     [to_nltk_tree(sent.root).pretty_print() for sent in doc.sents]
-    # get_parse_tree(sentences, nlp, 5)
     print(get_synonym('dog'))
     word = wn.synset('dog.n.01')
     print(get_hypernyms(word))
